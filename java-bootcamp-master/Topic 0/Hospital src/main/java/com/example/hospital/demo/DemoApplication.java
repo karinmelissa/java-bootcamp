@@ -1,19 +1,28 @@
 package com.example.hospital.demo;
 
-import com.example.hospital.entities.Hospital;
-import com.example.hospital.logic.HospitalBuilder;
-import com.example.hospital.logic.HospitalConstructor;
-import org.springframework.boot.SpringApplication;
+import com.example.hospital.demo.factories.PediatriaFactory;
+import com.example.hospital.demo.factories.UrgenciaFactory;
+import com.example.hospital.demo.factories.AbstracFactory;
+
 public class DemoApplication {
 
+    public static HospitalCreator configureApp(){
+        HospitalCreator hospital;
+        AbstracFactory factory;
+
+        String origenPaciente1 = "Urgencia";
+        if(origenPaciente1.equals("Urgencia")){
+            factory = new UrgenciaFactory();
+            hospital = new HospitalCreator(factory);
+        }else{
+            factory = new PediatriaFactory();
+            hospital = new HospitalCreator(factory);
+        }
+        return hospital;
+    }
     public static void main(String[] args) {
-        HospitalConstructor createHospital = new HospitalConstructor((new HospitalBuilder()));
-        Hospital hospital = null;
-
-        createHospital.builtHospital();
-        hospital = createHospital.getHospital();
-
-        System.out.println(hospital);
+        HospitalCreator hospital = configureApp();
+        hospital.crearElementos();
 
     }
 
